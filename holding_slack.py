@@ -1,57 +1,50 @@
 #!/usr/bin/env python3
-
 """
 Usage:
-  python script.py morning
-  python script.py closing
+  ./script.py morning
+  ./script.py closing
+
+On first run, log in to Slack manually — the session is saved in SESSION_DIR
+and reused on every subsequent run.
 
 Dependencies:
-  pip install playwright typer python-dotenv
-  playwright install firefox
+  uv add playwright typer python-dotenv
+  uv run playwright install chromium
 
 .env file:
-  PATH_PROFILE=/home/<you>/snap/firefox/common/.mozilla/firefox/<your-profile>
+  SESSION_DIR=/home/<you>/.local/share/slack-bot/session
 """
 
-import subprocess
-import time
+import os
 import typer
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
-import os
 
 load_dotenv()
 
 app = typer.Typer()
 
-DEBUGGING_URL = "http://localhost:9222"
-SLACK_URL    = "https://app.slack.com/client"
-
-
-def launch_firefox():
-    profile = os.getenv("PATH_PROFILE")
-    if not profile:
-        typer.echo("ERROR: PATH_PROFILE not set in .env", err=True)
-        raise typer.Exit(1)
-
-    typer.echo(f"Launching Firefox with profile: {profile}")
-    subprocess.Popen([
-        "firefox",
-        "--start-debugger-server", "9222",
-        "--profile", profile,
-    ])
-    time.sleep(3)  # give Firefox time to start
+TARGET_URL   = "https://app.slack.com/client"
+SESSION_DIR  = os.getenv("SESSION_DIR", ".session")
 
 
 def run_browser(action: str):
+    os.makedirs(SESSION_DIR, exist_ok=True)
+
     with sync_playwright() as p:
-        browser = p.firefox.connect_over_cdp(DEBUGGING_URL)
-        context = browser.contexts[0] if browser.contexts else browser.new_context()
+        context = p.chromium.launch_persistent_context(
+            user_data_dir=SESSION_DIR,
+            headless=False,
+            args=["--no-sandbox"],
+        )
+
         page = context.pages[0] if context.pages else context.new_page()
 
-        typer.echo(f"Navigating to {SLACK_URL} ...")
-        page.goto(SLACK_URL, wait_until="domcontentloaded")
-        page.wait_for_selector('[data-qa="channel_sidebar"]', timeout=30_000)
+        typer.echo(f"Navigating to {TARGET_URL} ...")
+        page.goto(TARGET_URL, wait_until="domcontentloaded")
+
+        # If not logged in yet, wait longer for the user to log in manually
+        page.wait_for_selector('[data-qa="channel_sidebar"]', timeout=120_000)
         typer.echo("Slack loaded!")
 
         # ── add your per-action automation steps below ────────────────────────
@@ -64,14 +57,13 @@ def run_browser(action: str):
         page.pause()
 
         input("Press Enter to exit …")
-        browser.close()
+        context.close()
 
 
 @app.command()
 def morning():
     """Start of day routine."""
     typer.echo("Hello!")
-    launch_firefox()
     run_browser("morning")
 
 
@@ -79,7 +71,6 @@ def morning():
 def closing():
     """End of day routine."""
     typer.echo("Bye!")
-    launch_firefox()
     run_browser("closing")
 
 

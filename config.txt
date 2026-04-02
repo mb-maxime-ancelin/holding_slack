@@ -1,4 +1,0 @@
-about:config
-
-
-devtools.debugger.remote-enabled : false
