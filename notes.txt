@@ -1,0 +1,34 @@
+/// home
+
+import re
+from playwright.sync_api import Page, expect
+
+
+def test_example(page: Page) -> None:
+    page.get_by_text("status", exact=True).click()
+    page.locator("#CBSDD2STH div").filter(has_text=re.compile(r"^status$")).click()
+    page.get_by_role("paragraph").click()
+    page.get_by_role("textbox", name="Mensaje a status").fill("lunch")
+    page.get_by_role("button", name="Usuario: Maxime Ancelin").click()
+    page.get_by_role("menuitem", name="Cómo actualizar tu estado").click()
+    page.get_by_role("button", name="Estado 5 de 5, configurar").click()
+    page.get_by_role("button", name="Guardar").click()
+    page1.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+    page1.get_by_role("button", name="Continue with Google").click()
+    page1.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click()
+
+
+/// back
+
+
+import re
+from playwright.sync_api import Page, expect
+
+
+def test_example(page: Page) -> None:
+    page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
+    page.get_by_role("paragraph").click()
+    page.get_by_role("textbox", name="Mensaje a status").fill("back")
+    page.get_by_role("button", name="Enviar ahora").click()
+    page1.goto("https://app.holded.com/myzone")
+    page1.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
