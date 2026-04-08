@@ -66,12 +66,13 @@ def run_browser(action: str):
 
         # ── add your per-action automation steps below ────────────────────────
         if action == "morning":
+            # post morning
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
             page.get_by_role("paragraph").click()
             page.get_by_role("textbox", name="Mensaje a status").fill("morning")
             page.get_by_role("button", name="Enviar ahora").click()
-            pass
         elif action == "lunch":
+            # post lunch
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
             page.get_by_role("paragraph").click()
             page.get_by_role("textbox", name="Mensaje a status").fill("lunch")
@@ -85,7 +86,6 @@ def run_browser(action: str):
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
             page.get_by_role("button", name="Continue with Google").click()
             page.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click() 
-            pass
         elif action == "back":
             page.pause()
             pass
@@ -100,7 +100,6 @@ def run_browser(action: str):
             page.pause()
             # page.get_by_role("button", name="Continue with Google").click()
             # page.pause()
-            pass
         # ──────────────────────────────────────────────────────────────────────
         typer.echo("Done")
 

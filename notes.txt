@@ -1,3 +1,12 @@
+/// morning
+
+
+def test_example(page: Page) -> None:
+    page.goto("https://app.holded.com/myzone")
+    page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").click()
+
+
+
 /// home
 
 import re
