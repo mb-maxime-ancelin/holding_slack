@@ -87,6 +87,12 @@ def run_browser(action: str):
             page.get_by_role("button", name="Continue with Google").click()
             page.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click() 
         elif action == "back":
+            # post back
+            page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
+            page.get_by_role("paragraph").click()
+            page.get_by_role("textbox", name="Mensaje a status").fill("lunch")
+            page.get_by_role("button", name="Enviar ahora").click()
+            # restart holded
             page.pause()
             pass
         elif action == "closing":
@@ -116,8 +122,8 @@ def morning():
 
 @app.command()
 def lunch():
-    typer.echo("morning")
-    run_browser("morning")
+    typer.echo("lunch")
+    run_browser("lunch")
 
 @app.command()
 def back():
