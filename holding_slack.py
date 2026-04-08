@@ -45,68 +45,72 @@ def run_browser(action: str):
 
         page = context.pages[0] if context.pages else context.new_page()
 
-        typer.echo(f"Navigating to {SLACK_URL} ...")
         page.goto(SLACK_URL, wait_until="domcontentloaded")
 
-        # If not logged in yet, wait longer for the user to log in manually
-        # page.pause()
-        # page.wait_for_selector('[data-qa="channel_sidebar"]', timeout=100_120_000)
-        typer.echo("Slack loaded!")
-
-        # page1 = context.pages[1] if context.pages else context.new_page()
-
-        # typer.echo(f"Navigating to {HOLDED_URL} ...")
-        # page1.goto(HOLDED_URL, wait_until="domcontentloaded")
-
-        # If not logged in yet, wait longer for the user to log in manually
-        # page.pause()
-        # page.wait_for_selector('[data-qa="channel_sidebar"]', timeout=100_120_000)
-        # typer.echo("Holded loaded!")
-
-
-        # ── add your per-action automation steps below ────────────────────────
         if action == "morning":
             # post morning
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
             page.get_by_role("paragraph").click()
             page.get_by_role("textbox", name="Mensaje a status").fill("morning")
             page.get_by_role("button", name="Enviar ahora").click()
+
+            # start holded
+            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+            page.get_by_role("button", name="Continue with Google").click()
+            page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").click()
+
         elif action == "lunch":
             # post lunch
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
             page.get_by_role("paragraph").click()
             page.get_by_role("textbox", name="Mensaje a status").fill("lunch")
             page.get_by_role("button", name="Enviar ahora").click()
+
             # set status to eating
             page.get_by_role("button", name="Usuario: Maxime Ancelin").click()
             page.get_by_role("menuitem", name="Cómo actualizar tu estado").click()
             page.get_by_role("button", name="Estado 5 de 5, configurar").click()
             page.get_by_role("button", name="Guardar").click()
+
             # pause holded
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
             page.get_by_role("button", name="Continue with Google").click()
-            page.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click() 
+            page.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click()
+
         elif action == "back":
             # post back
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
             page.get_by_role("paragraph").click()
             page.get_by_role("textbox", name="Mensaje a status").fill("back")
             page.get_by_role("button", name="Enviar ahora").click()
+
             # restart holded
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
             page.get_by_role("button", name="Continue with Google").click()
             page.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
+
         elif action == "closing":
             # post closing
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
             page.get_by_role("paragraph").click()
             page.get_by_role("textbox", name="Mensaje a status").fill("closing")
             page.get_by_role("button", name="Enviar ahora").click()
+
             # stop holded
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+            page.get_by_role("button", name="Continue with Google").click()
+            page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").first.click()
+            page.get_by_role("button", name="Sí, he terminado").click()
+
+            # go to harvest
+            page.goto("https://marsbased.harvestapp.com/time")
+            page.get_by_role("button", name="Copy rows from most recent").click()
+            page.get_by_role("button", name="Edit").click()
+            page.get_by_role("textbox", name="hours").fill("8:00")
+
+            # manual check before confirming
+            typer.echo("confirm hours")
             page.pause()
-            # page.get_by_role("button", name="Continue with Google").click()
-            # page.pause()
         # ──────────────────────────────────────────────────────────────────────
         typer.echo("Done")
 

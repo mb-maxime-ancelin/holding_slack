@@ -41,3 +41,50 @@ def test_example(page: Page) -> None:
     page.get_by_role("button", name="Enviar ahora").click()
     page1.goto("https://app.holded.com/myzone")
     page1.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
+
+
+// closing
+
+    page.get_by_role("button", name="Continue with Google").click()
+    page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").first.click()
+    page.get_by_role("button", name="Sí, he terminado").click()
+    page.goto("https://id.getharvest.com/harvest/sign_in?account_id=414280&return_to=%2Ftime&signature=IjQxNDI4MCI%3D--4484284d3fc11f1b747c0f69e4b025bf8717b8fc")
+    page.get_by_role("link", name="Sign in with Google").click()
+
+
+////\
+
+
+import re
+from playwright.sync_api import Page, expect
+
+
+def test_example(page: Page) -> None:
+    page.get_by_role("button", name="Continue with Google").click()
+    page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").first.click()
+    page.get_by_role("button", name="Sí, he terminado").click()
+    page.goto("https://id.getharvest.com/harvest/sign_in?account_id=414280&return_to=%2Ftime&signature=IjQxNDI4MCI%3D--4484284d3fc11f1b747c0f69e4b025bf8717b8fc")
+    page.get_by_role("link", name="Sign in with Google").click()
+    page.get_by_role("button", name="Verify identity").click()
+    page.get_by_role("textbox", name="Verification code").fill("807663")
+    page.get_by_role("button", name="Verify identity").click()
+    page.get_by_role("tab", name="Tue 0:").click()
+    page.get_by_role("button", name="Track time").click()
+    page.get_by_role("button", name="Holiday").click()
+    page.get_by_role("button", name="MarsBased Time Off").click()
+    page.get_by_role("option", name="Visor GIS (Solución B2)").click()
+    page.get_by_role("button", name="Development").click()
+    page.get_by_role("dialog", name="New time entry for Tuesday,").click()
+    page.get_by_role("option", name="Development").click()
+    page.get_by_role("textbox", name="hours").click()
+    page.get_by_role("textbox", name="hours").click()
+    page.get_by_role("textbox", name="hours").fill("8:00")
+    page.get_by_role("button", name="Save entry").click()
+    page.get_by_role("tab", name="Wed 0:").click()
+    page.get_by_role("button", name="Copy rows from most recent").click()
+    page.get_by_role("button", name="Edit").click()
+    page.get_by_role("textbox", name="hours").click()
+    page.get_by_role("textbox", name="hours").fill("80:00")
+    page.get_by_role("textbox", name="hours").press("ArrowRight")
+    page.get_by_role("textbox", name="hours").fill("8:00")
+    page.get_by_role("button", name="Update entry").click()
