@@ -90,11 +90,12 @@ def run_browser(action: str):
             # post back
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
             page.get_by_role("paragraph").click()
-            page.get_by_role("textbox", name="Mensaje a status").fill("lunch")
+            page.get_by_role("textbox", name="Mensaje a status").fill("back")
             page.get_by_role("button", name="Enviar ahora").click()
             # restart holded
-            page.pause()
-            pass
+            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+            page.get_by_role("button", name="Continue with Google").click()
+            page.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
         elif action == "closing":
             # post closing
             page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
