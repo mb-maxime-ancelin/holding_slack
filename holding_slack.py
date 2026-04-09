@@ -34,6 +34,11 @@ HARVEST_URL = "https://marsbased.harvestapp.com/time"
 def short_sleep(page):
     page.wait_for_timeout(3_000)
 
+def set_status(page, status):
+    page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
+    page.get_by_role("paragraph").click()
+    page.get_by_role("textbox", name="Mensaje a status").fill(status)
+    page.get_by_role("button", name="Enviar ahora").click()
 
 def run_browser(action: str):
     os.makedirs(SESSION_DIR, exist_ok=True)
@@ -52,10 +57,7 @@ def run_browser(action: str):
 
         if action == "morning":
             # post morning
-            page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
-            page.get_by_role("paragraph").click()
-            page.get_by_role("textbox", name="Mensaje a status").fill("morning")
-            page.get_by_role("button", name="Enviar ahora").click()
+            set_status(page, "morning")
 
             # start holded
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
@@ -64,10 +66,7 @@ def run_browser(action: str):
 
         elif action == "lunch":
             # post lunch
-            page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
-            page.get_by_role("paragraph").click()
-            page.get_by_role("textbox", name="Mensaje a status").fill("lunch")
-            page.get_by_role("button", name="Enviar ahora").click()
+            set_status(page, "lunch")
 
             # set status to eating
             page.get_by_role("button", name="Usuario: Maxime Ancelin").click()
@@ -82,10 +81,7 @@ def run_browser(action: str):
 
         elif action == "back":
             # post back
-            page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
-            page.get_by_role("paragraph").click()
-            page.get_by_role("textbox", name="Mensaje a status").fill("back")
-            page.get_by_role("button", name="Enviar ahora").click()
+            set_status(page, "back")
 
             # restart holded
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
@@ -94,10 +90,7 @@ def run_browser(action: str):
 
         elif action == "closing":
             # post closing
-            page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
-            page.get_by_role("paragraph").click()
-            page.get_by_role("textbox", name="Mensaje a status").fill("closing")
-            page.get_by_role("button", name="Enviar ahora").click()
+            set_status(page, "closing")
 
             # stop holded
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
@@ -115,7 +108,7 @@ def run_browser(action: str):
             typer.echo("confirm hours")
             page.pause()
 
-        elif action == "nothing":
+        elif action == "testing":
             try:
                 page.goto("https://app.holded.com/myzone", timeout=3_000)
             except:
@@ -132,9 +125,9 @@ def run_browser(action: str):
 
 # check flow
 @app.command()
-def nothing():
-    typer.echo("nothing")
-    run_browser("nothing")
+def testing():
+    typer.echo("testing ...")
+    run_browser("testing")
 
 @app.command()
 def morning():
