@@ -111,14 +111,21 @@ def run_browser(action: str):
             # manual check before confirming
             typer.echo("confirm hours")
             page.pause()
-        # ──────────────────────────────────────────────────────────────────────
+
+        elif action == "nothing":
+            typer.echo(">>")
+
         typer.echo("Done")
 
-        page.pause()
+        # page.pause()
 
-        input("Press Enter to exit …")
         context.close()
 
+# check flow
+@app.command()
+def nothing():
+    typer.echo("nothing")
+    run_browser("nothing")
 
 @app.command()
 def morning():
