@@ -31,6 +31,9 @@ SLACK_URL = "https://app.slack.com/client"
 HOLDED_URL = "https://app.holded.com/myzone"
 HARVEST_URL = "https://marsbased.harvestapp.com/time"
 
+def short_sleep(page):
+    page.wait_for_timeout(3_000)
+
 
 def run_browser(action: str):
     os.makedirs(SESSION_DIR, exist_ok=True)
@@ -113,6 +116,12 @@ def run_browser(action: str):
             page.pause()
 
         elif action == "nothing":
+            try:
+                page.goto("https://app.holded.com/myzone", timeout=3_000)
+            except:
+                page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+                page.get_by_role("button", name="Continue with Google").click()
+            short_sleep(page)
             typer.echo(">>")
 
         typer.echo("Done")
