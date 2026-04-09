@@ -40,6 +40,13 @@ def set_status(page, status):
     page.get_by_role("textbox", name="Mensaje a status").fill(status)
     page.get_by_role("button", name="Enviar ahora").click()
 
+def safe_go_to_holded(page):
+    try:
+        page.goto("https://app.holded.com/myzone", timeout=1_000)
+    except:
+        page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+        page.get_by_role("button", name="Continue with Google").click()
+
 def run_browser(action: str):
     os.makedirs(SESSION_DIR, exist_ok=True)
 
@@ -60,8 +67,7 @@ def run_browser(action: str):
             set_status(page, "morning")
 
             # start holded
-            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
-            page.get_by_role("button", name="Continue with Google").click()
+            safe_go_to_holded(page)
             page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").click()
 
         elif action == "lunch":
@@ -75,8 +81,7 @@ def run_browser(action: str):
             page.get_by_role("button", name="Guardar").click()
 
             # pause holded
-            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
-            page.get_by_role("button", name="Continue with Google").click()
+            safe_go_to_holded(page)
             page.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click()
 
         elif action == "back":
@@ -84,8 +89,7 @@ def run_browser(action: str):
             set_status(page, "back")
 
             # restart holded
-            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
-            page.get_by_role("button", name="Continue with Google").click()
+            safe_go_to_holded(page)
             page.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
 
         elif action == "closing":
@@ -93,8 +97,7 @@ def run_browser(action: str):
             set_status(page, "closing")
 
             # stop holded
-            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
-            page.get_by_role("button", name="Continue with Google").click()
+            safe_go_to_holded(page)
             page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").first.click()
             page.get_by_role("button", name="Sí, he terminado").click()
 
@@ -109,11 +112,7 @@ def run_browser(action: str):
             page.pause()
 
         elif action == "testing":
-            try:
-                page.goto("https://app.holded.com/myzone", timeout=3_000)
-            except:
-                page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
-                page.get_by_role("button", name="Continue with Google").click()
+            safe_go_to_holded(page)
             short_sleep(page)
             typer.echo(">>")
 
