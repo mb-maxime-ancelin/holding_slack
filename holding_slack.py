@@ -42,7 +42,7 @@ def set_status(page, status):
 
 def safe_go_to_holded(page):
     try:
-        page.goto("https://app.holded.com/myzone", timeout=1_000)
+        page.goto("https://app.holded.com/myzone", timeout=3_000)
     except:
         page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
         page.get_by_role("button", name="Continue with Google").click()
