@@ -129,22 +129,22 @@ def nothing():
 
 @app.command()
 def morning():
-    typer.echo("morning")
+    typer.echo("☀️ morning")
     run_browser("morning")
 
 @app.command()
 def lunch():
-    typer.echo("lunch")
+    typer.echo("🍔 lunch")
     run_browser("lunch")
 
 @app.command()
 def back():
-    typer.echo("back")
+    typer.echo("🌇 back")
     run_browser("back")
 
 @app.command()
 def closing():
-    typer.echo("closing")
+    typer.echo("🌙 closing")
     run_browser("closing")
 
 
