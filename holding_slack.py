@@ -41,10 +41,15 @@ def set_status(page, status):
     page.get_by_role("button", name="Enviar ahora").click()
 
 def safe_go_to_holded(page):
+    page.pause()
     try:
+        print("--- my zone")
         page.goto("https://app.holded.com/myzone", timeout=3_000)
+        print("--- my zone ok")
     except:
+        print("--- my zone except")
         page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+        # TODO: check if "Continue with Google" button is visible, if yes click button 
         page.wait_for_timeout(1_000)
         page.get_by_role("button", name="Continue with Google").click()
         page.pause()
