@@ -45,7 +45,9 @@ def safe_go_to_holded(page):
         page.goto("https://app.holded.com/myzone", timeout=3_000)
     except:
         page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+        page.wait_for_timeout(1_000)
         page.get_by_role("button", name="Continue with Google").click()
+        page.pause()
 
 def run_browser(action: str):
     os.makedirs(SESSION_DIR, exist_ok=True)
@@ -60,7 +62,10 @@ def run_browser(action: str):
 
         page = context.pages[0] if context.pages else context.new_page()
 
-        page.goto(SLACK_URL, wait_until="domcontentloaded")
+        try:
+            page.goto(SLACK_URL, wait_until="domcontentloaded")
+        except:
+            page.pause()
 
         if action == "morning":
             # post morning
