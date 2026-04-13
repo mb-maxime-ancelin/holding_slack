@@ -17,6 +17,7 @@ Dependencies:
 """
 
 import os
+import re
 from socket import timeout
 import typer
 from dotenv import load_dotenv
@@ -44,13 +45,16 @@ def set_status(page, status):
 def safe_go_to_holded(page):
     try:
         print("--- my zone")
-        page.goto("https://app.holded.com/myzone", timeout=3_000)
+        page.goto("https://app.holded.com/myzone", timeout=1_000)
+        page.pause()
+        logo_button = page.get_by_role("navigation").get_by_role("link").filter(has_text=re.compile(r"^$"))
+        logo_button.wait_for(state="visible", timeout=1_000)
         print("--- my zone ok")
     except:
         print("--- my zone except")
         page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
         google_btn = page.get_by_role("button", name="Continue with Google")
-        google_btn.wait_for(state="visible", timeout=3_000)
+        google_btn.wait_for(state="visible", timeout=1_000)
         google_btn.click()
 
 def run_browser(action: str):
