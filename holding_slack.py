@@ -27,7 +27,7 @@ load_dotenv()
 app = typer.Typer()
 
 SESSION_DIR = os.getenv("SESSION_DIR", ".session")
-USER = os.getenv("USER", "")
+SLACK_USER = os.getenv("SLACK_USER", "")
 SLACK_URL = "https://app.slack.com/client"
 HOLDED_URL = "https://app.holded.com/myzone"
 HARVEST_URL = "https://marsbased.harvestapp.com/time"
@@ -84,7 +84,7 @@ def run_browser(action: str):
             set_status(page, "lunch")
 
             # set status to eating
-            page.get_by_role("button", name=f"Usuario: {USER}").click()
+            page.get_by_role("button", name=f"Usuario: {SLACK_USER}").click()
             page.get_by_role("menuitem", name="Cómo actualizar tu estado").click()
             page.get_by_role("button", name="Estado 5 de 5, configurar").click()
             page.get_by_role("button", name="Guardar").click()
