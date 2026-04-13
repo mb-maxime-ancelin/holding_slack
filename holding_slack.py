@@ -41,7 +41,6 @@ def set_status(page, status):
     page.get_by_role("button", name="Enviar ahora").click()
 
 def safe_go_to_holded(page):
-    page.pause()
     try:
         print("--- my zone")
         page.goto("https://app.holded.com/myzone", timeout=3_000)
@@ -49,10 +48,13 @@ def safe_go_to_holded(page):
     except:
         print("--- my zone except")
         page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
-        # TODO: check if "Continue with Google" button is visible, if yes click button 
-        page.wait_for_timeout(1_000)
-        page.get_by_role("button", name="Continue with Google").click()
-        page.pause()
+        google_btn = page.get_by_role("button", name="Continue with Google")
+        try:
+            google_btn.wait_for(state="visible", timeout=3_000)
+            google_btn.click()
+        except:
+            # already logged in / redirected — no SSO button to click
+            pass
 
 def run_browser(action: str):
     os.makedirs(SESSION_DIR, exist_ok=True)
