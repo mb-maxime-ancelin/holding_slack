@@ -49,12 +49,8 @@ def safe_go_to_holded(page):
         print("--- my zone except")
         page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
         google_btn = page.get_by_role("button", name="Continue with Google")
-        try:
-            google_btn.wait_for(state="visible", timeout=3_000)
-            google_btn.click()
-        except:
-            # already logged in / redirected — no SSO button to click
-            pass
+        google_btn.wait_for(state="visible", timeout=3_000)
+        google_btn.click()
 
 def run_browser(action: str):
     os.makedirs(SESSION_DIR, exist_ok=True)
