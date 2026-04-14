@@ -20,6 +20,7 @@ import os
 import re
 from socket import timeout
 import typer
+from rich import print
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
@@ -43,19 +44,25 @@ def set_status(page, status):
     page.get_by_role("button", name="Enviar ahora").click()
 
 def safe_go_to_holded(page):
+    print("holded:")
     try:
-        print("--- my zone")
+        # already logged in holded
         page.goto("https://app.holded.com/myzone", timeout=1_000)
-        page.pause()
         logo_button = page.get_by_role("navigation").get_by_role("link").filter(has_text=re.compile(r"^$"))
         logo_button.wait_for(state="visible", timeout=1_000)
-        print("--- my zone ok")
     except:
-        print("--- my zone except")
-        page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
-        google_btn = page.get_by_role("button", name="Continue with Google")
-        google_btn.wait_for(state="visible", timeout=1_000)
-        google_btn.click()
+        # click login needed
+        try:
+            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+            google_btn = page.get_by_role("button", name="Continue with Google")
+            google_btn.wait_for(state="visible", timeout=1_000)
+            google_btn.click(timeout=500)
+            logo_button = page.get_by_role("navigation").get_by_role("link").filter(has_text=re.compile(r"^$"))
+            logo_button.wait_for(state="visible", timeout=1_000)
+        except:
+            # auto login fails, manual login needed
+            print("[bold red]holded: manual login required")
+            page.pause()
 
 def run_browser(action: str):
     os.makedirs(SESSION_DIR, exist_ok=True)
