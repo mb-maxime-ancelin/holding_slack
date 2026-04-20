@@ -34,8 +34,18 @@ SLACK_URL = "https://app.slack.com/client"
 HOLDED_URL = "https://app.holded.com/myzone"
 HARVEST_URL = "https://marsbased.harvestapp.com/time"
 
+SAFE_TIMEOUT = 5_000
+
 def short_sleep(page):
-    page.wait_for_timeout(3_000)
+    page.wait_for_timeout(SAFE_TIMEOUT)
+
+def safe_go_to_slack(page):
+    print(":slack:")
+    try:
+        page.goto(SLACK_URL, wait_until="domcontentloaded", timeout=SAFE_TIMEOUT)
+    except:
+        page.pause()
+    # page.pause()
 
 def set_status(page, status):
     page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
@@ -43,22 +53,28 @@ def set_status(page, status):
     page.get_by_role("textbox", name="Mensaje a status").fill(status)
     page.get_by_role("button", name="Enviar ahora").click()
 
+
 def safe_go_to_holded(page):
     print("holded:")
     try:
         # already logged in holded
-        page.goto("https://app.holded.com/myzone", timeout=1_000)
-        logo_button = page.get_by_role("navigation").get_by_role("link").filter(has_text=re.compile(r"^$"))
-        logo_button.wait_for(state="visible", timeout=1_000)
+        page.goto("https://app.holded.com/myzone", timeout=SAFE_TIMEOUT)
+        page.pause()
+        mb = page.get_by_role("button", name="MarsBased SL")
+        mb.wait_for(state="visible", timeout=SAFE_TIMEOUT)
     except:
         # click login needed
         try:
+            print("click login needed")
             page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
             google_btn = page.get_by_role("button", name="Continue with Google")
-            google_btn.wait_for(state="visible", timeout=1_000)
-            google_btn.click(timeout=500)
+            google_btn.wait_for(state="visible", timeout=SAFE_TIMEOUT)
+            print("google_btn visible")
+            google_btn.click(timeout=)
+            print("click google btn")
             logo_button = page.get_by_role("navigation").get_by_role("link").filter(has_text=re.compile(r"^$"))
-            logo_button.wait_for(state="visible", timeout=1_000)
+            logo_button.wait_for(state="visible", timeout=SAFE_TIMEOUT)
+            print("-- click login needed : all ok")
         except:
             # auto login fails, manual login needed
             print("[bold red]holded: manual login required")
@@ -77,10 +93,7 @@ def run_browser(action: str):
 
         page = context.pages[0] if context.pages else context.new_page()
 
-        try:
-            page.goto(SLACK_URL, wait_until="domcontentloaded")
-        except:
-            page.pause()
+        safe_go_to_slack(page)
 
         if action == "morning":
             # post morning
@@ -111,6 +124,7 @@ def run_browser(action: str):
             # restart holded
             safe_go_to_holded(page)
             page.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
+
 
         elif action == "closing":
             # post closing
