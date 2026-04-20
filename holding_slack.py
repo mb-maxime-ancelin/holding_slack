@@ -70,7 +70,7 @@ def safe_go_to_holded(page):
             google_btn = page.get_by_role("button", name="Continue with Google")
             google_btn.wait_for(state="visible", timeout=SAFE_TIMEOUT)
             print("google_btn visible")
-            google_btn.click(timeout=)
+            google_btn.click(timeout=SAFE_TIMEOUT)
             print("click google btn")
             logo_button = page.get_by_role("navigation").get_by_role("link").filter(has_text=re.compile(r"^$"))
             logo_button.wait_for(state="visible", timeout=SAFE_TIMEOUT)
