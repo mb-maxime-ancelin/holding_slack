@@ -22,7 +22,7 @@ from socket import timeout
 import typer
 from rich import print
 from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 load_dotenv()
 
@@ -34,6 +34,9 @@ SLACK_URL = "https://app.slack.com/client"
 HOLDED_URL = "https://app.holded.com/myzone"
 HARVEST_URL = "https://marsbased.harvestapp.com/time"
 
+
+SHORT_TIMEOUT = 1_000
+SLEEP_TIMEOUT = 3_000
 SAFE_TIMEOUT = 5_000
 
 def short_sleep(page):
@@ -43,6 +46,9 @@ def safe_go_to_slack(page):
     print("> slack:")
     try:
         page.goto(SLACK_URL, wait_until="domcontentloaded", timeout=SAFE_TIMEOUT)
+        print("1")
+        expect(page.get_by_text("MarsBased")).to_be_visible(timeout=3000)
+        print("3")
     except:
         print("[bold red]slack: manual login required")
         page.pause()
@@ -58,19 +64,31 @@ def safe_go_to_holded(page):
     print("> holded:")
     try:
         # already logged in holded
-        page.goto("https://app.holded.com/myzone", timeout=SAFE_TIMEOUT)
+        page.goto("https://app.holded.com/myzone", wait_until="domcontentloaded", timeout=SAFE_TIMEOUT)
         mb = page.get_by_role("button", name="MarsBased SL")
-        mb.wait_for(state="visible", timeout=SAFE_TIMEOUT)
+        mb.wait_for(state="visible", timeout=SHORT_TIMEOUT)
     except:
         # click login needed
         try:
             print("click login needed")
-            page.goto("https://app.holded.com/login?url_after_login=%2Fmyzone")
+
+            print(1)
+            # reject cookies if needed
+            reject_cookies = page.get_by_role("button", name="Reject")
+            print(2)
+            reject_cookies.wait_for(state="visible", timeout=SAFE_TIMEOUT)
+            print(3)
+            reject_cookies.click(timeout=SAFE_TIMEOUT)
+            print(4)
+
+            # click login with Google
             google_btn = page.get_by_role("button", name="Continue with Google")
             google_btn.wait_for(state="visible", timeout=SAFE_TIMEOUT)
             print("google_btn visible")
-            google_btn.click(timeout=2_000)
+            google_btn.click(timeout=SHORT_TIMEOUT)
             print("click google btn")
+
+            # check login ok
             logo_button = page.get_by_role("navigation").get_by_role("link").filter(has_text=re.compile(r"^$"))
             logo_button.wait_for(state="visible", timeout=SAFE_TIMEOUT)
             print("-- click login needed : all ok")
