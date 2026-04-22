@@ -40,12 +40,12 @@ def short_sleep(page):
     page.wait_for_timeout(SAFE_TIMEOUT)
 
 def safe_go_to_slack(page):
-    print(":slack:")
+    print("> slack:")
     try:
         page.goto(SLACK_URL, wait_until="domcontentloaded", timeout=SAFE_TIMEOUT)
     except:
+        print("[bold red]slack: manual login required")
         page.pause()
-    # page.pause()
 
 def set_status(page, status):
     page.get_by_label("Canales y mensajes directos").get_by_text("status").dblclick()
@@ -55,11 +55,10 @@ def set_status(page, status):
 
 
 def safe_go_to_holded(page):
-    print("holded:")
+    print("> holded:")
     try:
         # already logged in holded
         page.goto("https://app.holded.com/myzone", timeout=SAFE_TIMEOUT)
-        page.pause()
         mb = page.get_by_role("button", name="MarsBased SL")
         mb.wait_for(state="visible", timeout=SAFE_TIMEOUT)
     except:
@@ -151,8 +150,6 @@ def run_browser(action: str):
             typer.echo(">>")
 
         typer.echo("Done")
-
-        # page.pause()
 
         context.close()
 
