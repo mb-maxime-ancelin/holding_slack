@@ -12,7 +12,7 @@ Small Playwright automation that drives my daily ritual across three services:
 ./holding_slack.py morning   # ☀️  post "morning"  + start Holded
 ./holding_slack.py lunch     # 🍔 post "lunch"    + set eating status + pause Holded
 ./holding_slack.py back      # 🌇 post "back"     + resume Holded
-./holding_slack.py closing   # 🌙 post "closing"  + stop Holded + fill Harvest
+./holding_slack.py closing   # 🌙 post "closing"  + stop Holded + fill Harvest, give control back to user on Harvest for final confirmation
 ./holding_slack.py testing   # sanity-check the safe_go_to_holded flow
 ```
 
