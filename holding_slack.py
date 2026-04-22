@@ -46,9 +46,7 @@ def safe_go_to_slack(page):
     print("> slack:")
     try:
         page.goto(SLACK_URL, wait_until="domcontentloaded", timeout=SAFE_TIMEOUT)
-        print("1")
         expect(page.get_by_text("MarsBased")).to_be_visible(timeout=3000)
-        print("3")
     except:
         print("[bold red]slack: manual login required")
         page.pause()
@@ -72,14 +70,10 @@ def safe_go_to_holded(page):
         try:
             print("click login needed")
 
-            print(1)
             # reject cookies if needed
             reject_cookies = page.get_by_role("button", name="Reject")
-            print(2)
             reject_cookies.wait_for(state="visible", timeout=SAFE_TIMEOUT)
-            print(3)
             reject_cookies.click(timeout=SAFE_TIMEOUT)
-            print(4)
 
             # click login with Google
             google_btn = page.get_by_role("button", name="Continue with Google")
