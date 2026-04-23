@@ -26,6 +26,16 @@ cp .env.example .env   # then edit
 
 On first run a Chromium window opens — log into Slack (and Holded via Google) manually. The session is persisted in `SESSION_DIR` and reused afterwards.
 
+## Shell helpers (optional)
+
+Install `st_morning` / `st_lunch` / `st_back` / `st_closing` / `st_testing` helpers that also set the terminal tab title:
+
+```bash
+./install.sh
+```
+
+Detects OS (Linux/macOS), shell (bash/zsh), and terminal (wezterm, iTerm2, Warp, kitty, gnome-terminal, alacritty, Terminal.app, or generic ANSI fallback), prompting when ambiguous. Writes `~/.holding_slack.sh` and adds one guarded `source` line to your rc file — re-run any time to regenerate.
+
 ## `.env`
 
 | key           | what it is                                                    |
