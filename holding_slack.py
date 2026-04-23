@@ -40,7 +40,7 @@ SLEEP_TIMEOUT = 3_000
 SAFE_TIMEOUT = 5_000
 
 def short_sleep(page):
-    page.wait_for_timeout(SAFE_TIMEOUT)
+    page.wait_for_timeout(SLEEP_TIMEOUT)
 
 def safe_go_to_slack(page):
     print("> slack:")
@@ -70,16 +70,21 @@ def safe_go_to_holded(page):
         try:
             print("click login needed")
 
-            # reject cookies if needed
+            # reject cookies if banner is shown
             reject_cookies = page.get_by_role("button", name="Reject")
-            reject_cookies.wait_for(state="visible", timeout=SAFE_TIMEOUT)
-            reject_cookies.click(timeout=SAFE_TIMEOUT)
+            try:
+                reject_cookies.wait_for(state="visible", timeout=SHORT_TIMEOUT)
+                reject_cookies.click(timeout=SAFE_TIMEOUT)
+                reject_cookies.wait_for(state="hidden", timeout=SAFE_TIMEOUT)
+            except:
+                print("no cookie banner")
 
             # click login with Google
             google_btn = page.get_by_role("button", name="Continue with Google")
             google_btn.wait_for(state="visible", timeout=SAFE_TIMEOUT)
             print("google_btn visible")
-            google_btn.click(timeout=SHORT_TIMEOUT)
+            google_btn.scroll_into_view_if_needed(timeout=SHORT_TIMEOUT)
+            google_btn.click(timeout=SAFE_TIMEOUT)
             print("click google btn")
 
             # check login ok
