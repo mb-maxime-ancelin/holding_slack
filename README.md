@@ -1,10 +1,10 @@
 # holding_slack
 
-Small Playwright automation that drives my daily ritual across three services:
+Tool to post #status and clock on holded on one go.
 
 - <img src="https://www.google.com/s2/favicons?domain=slack.com&sz=16" width="16" height="16" align="absmiddle" /> **Slack** — post a status message in `#status` and set the status emoji
 - <img src="https://www.google.com/s2/favicons?domain=holded.com&sz=16" width="16" height="16" align="absmiddle" /> **Holded** — start / pause / resume / stop the time tracker
-- <img src="https://www.google.com/s2/favicons?domain=harvestapp.com&sz=16" width="16" height="16" align="absmiddle" /> **Harvest** — copy yesterday's rows and set hours at end of day
+- <img src="https://www.google.com/s2/favicons?domain=harvestapp.com&sz=16" width="16" height="16" align="absmiddle" /> **Harvest** — copy yesterday's rows and set hours at end of day, await final confirmation
 
 ## Commands
 
