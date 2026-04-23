@@ -36,7 +36,7 @@ HARVEST_URL = "https://marsbased.harvestapp.com/time"
 
 
 SHORT_TIMEOUT = 1_000
-SLEEP_TIMEOUT = 3_000
+SLEEP_TIMEOUT = 2_000
 SAFE_TIMEOUT = 5_000
 
 def short_sleep(page):
@@ -56,6 +56,7 @@ def set_status(page, status):
     page.get_by_role("paragraph").click()
     page.get_by_role("textbox", name="Mensaje a status").fill(status)
     page.get_by_role("button", name="Enviar ahora").click()
+    short_sleep(page)
 
 
 def safe_go_to_holded(page):
@@ -118,6 +119,7 @@ def run_browser(action: str):
             # start holded
             safe_go_to_holded(page)
             page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").click()
+            short_sleep(page)
 
         elif action == "lunch":
             # post lunch
@@ -132,6 +134,7 @@ def run_browser(action: str):
             # pause holded
             safe_go_to_holded(page)
             page.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click()
+            short_sleep(page)
 
         elif action == "back":
             # post back
@@ -140,6 +143,7 @@ def run_browser(action: str):
             # restart holded
             safe_go_to_holded(page)
             page.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
+            short_sleep(page)
 
 
         elif action == "closing":
@@ -150,6 +154,7 @@ def run_browser(action: str):
             safe_go_to_holded(page)
             page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").first.click()
             page.get_by_role("button", name="Sí, he terminado").click()
+            short_sleep(page)
 
             # go to harvest
             page.goto("https://marsbased.harvestapp.com/time")
