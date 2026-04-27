@@ -46,7 +46,7 @@ def safe_go_to_slack(page):
     print("> slack:")
     try:
         page.goto(SLACK_URL, wait_until="domcontentloaded", timeout=SAFE_TIMEOUT)
-        expect(page.get_by_text("MarsBased")).to_be_visible(timeout=3000)
+        expect(page.get_by_text("MarsBased")).to_be_visible(timeout=SAFE_TIMEOUT)
     except:
         print("[bold red]slack: manual login required")
         page.pause()
