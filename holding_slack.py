@@ -133,7 +133,7 @@ def run_browser(action: str):
 
             # pause holded
             safe_go_to_holded(page)
-            page.locator(".MuiStack-root.css-8v90jo > button:nth-child(2)").click()
+            page.locator(".MuiStack-root.mui-8v90jo > button:nth-child(2)").click()
             short_sleep(page)
 
         elif action == "back":
@@ -142,7 +142,7 @@ def run_browser(action: str):
 
             # restart holded
             safe_go_to_holded(page)
-            page.locator(".MuiStack-root.css-8v90jo > span > .MuiButtonBase-root").click()
+            page.locator(".MuiStack-root.mui-8v90jo > span > .MuiButtonBase-root").click()
             short_sleep(page)
 
 
