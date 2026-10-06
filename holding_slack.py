@@ -133,8 +133,7 @@ def run_browser(action: str):
 
             # pause holded
             safe_go_to_holded(page)
-            # page.pause()
-            page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").click()
+            page.get_by_role("button", name="Pausar fichaje").nth(1).click()
             short_sleep(page)
 
         elif action == "back":
@@ -143,9 +142,7 @@ def run_browser(action: str):
 
             # restart holded
             safe_go_to_holded(page)
-            # page.pause()
-            page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").click()
-            # page.locator(".MuiStack-root.mui-8v90jo > span > .MuiButtonBase-root").click()
+            page.get_by_role("button", name="Reanudar fichaje").nth(1).click()
             short_sleep(page)
 
 
@@ -157,8 +154,6 @@ def run_browser(action: str):
             safe_go_to_holded(page)
             page.get_by_role("button", name="Fichar salida").click()
             page.get_by_role("button", name="Sí, he terminado").click()
-            # page.locator(".MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeLarge").first.click()
-            # page.get_by_role("button", name="Sí, he terminado").click()
             short_sleep(page)
 
             # go to harvest
