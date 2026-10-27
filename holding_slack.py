@@ -118,7 +118,7 @@ def run_browser(action: str):
 
             # start holded
             safe_go_to_holded(page)
-            page.get_by_role("button", name="Iniciar fichaje").click()
+            page.get_by_text("Iniciar fichaje").click()
             short_sleep(page)
 
         elif action == "lunch":
@@ -152,19 +152,20 @@ def run_browser(action: str):
 
             # stop holded
             safe_go_to_holded(page)
-            page.get_by_role("button", name="Fichar salida").click()
+            page.get_by_text("Fichar salida").click()
             page.get_by_role("button", name="Sí, he terminado").click()
             short_sleep(page)
 
-            # go to harvest
-            page.goto("https://marsbased.harvestapp.com/time")
-            page.get_by_role("button", name="Copy rows from most recent").click()
-            page.get_by_role("button", name="Edit").click()
-            page.get_by_role("textbox", name="hours").fill("8:00")
+            # -- Do not automate harvest anymore
+            # # go to harvest
+            # page.goto("https://marsbased.harvestapp.com/time")
+            # page.get_by_role("button", name="Copy rows from most recent").click()
+            # page.get_by_role("button", name="Edit").click()
+            # page.get_by_role("textbox", name="hours").fill("8:00")
 
-            # manual check before confirming
-            typer.echo("confirm hours")
-            page.pause()
+            # # manual check before confirming
+            # typer.echo("confirm hours")
+            # page.pause()
 
         elif action == "testing":
             safe_go_to_holded(page)
